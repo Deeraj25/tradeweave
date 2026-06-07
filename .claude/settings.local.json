@@ -23,7 +23,8 @@
       "Bash(git commit -q -m 'feat: cinematic Home page \\(parallax hero, split panels, featured flip cards, value props\\) *)",
       "Bash(node scripts/refetch.mjs)",
       "Bash(node scripts/wiki-fetch.mjs)",
-      "Bash(git commit -q -m 'feat: rebranded animated auth \\(Google + Mobile OTP, no GitHub\\); fix catalog image relevance *)"
+      "Bash(git commit -q -m 'feat: rebranded animated auth \\(Google + Mobile OTP, no GitHub\\); fix catalog image relevance *)",
+      "Bash(git commit -q -m 'feat: retail storefront \\(filters/search/sort\\), product detail, working cart *)"
     ]
   }
 }
