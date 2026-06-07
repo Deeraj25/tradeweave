@@ -1,35 +1,27 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "motion/react";
-import { Minus, Plus, Trash2, ShoppingBag, ArrowRight, CheckCircle2 } from "lucide-react";
+import { Minus, Plus, Trash2, ShoppingBag, ArrowRight, Truck } from "lucide-react";
 import { useCart } from "../store/cart";
+import { useOrders } from "../store/orders";
 import { useToast } from "../store/toast";
 import { inr } from "../lib/format";
 
 export default function Cart() {
   const { items, updateQty, remove, clear, subtotal } = useCart();
+  const placeOrder = useOrders((s) => s.placeOrder);
   const push = useToast((s) => s.push);
-  const [placed, setPlaced] = useState(false);
+  const navigate = useNavigate();
 
   const sub = subtotal();
   const shipping = sub === 0 || sub >= 4999 ? 0 : 99;
   const total = sub + shipping;
 
-  if (placed) {
-    return (
-      <div className="mx-auto grid max-w-lg place-items-center gap-4 px-6 py-28 text-center">
-        <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", stiffness: 200, damping: 15 }}>
-          <CheckCircle2 size={72} className="text-emerald-400" />
-        </motion.div>
-        <h1 className="text-display text-3xl font-semibold">Order placed!</h1>
-        <p className="text-cream/60">Your order is confirmed. Real-time tracking (packing → shipping → delivery) is coming in a future phase.</p>
-        <div className="mt-2 flex gap-3">
-          <Link to="/retail" className="btn-gold h-11">Continue shopping</Link>
-          <Link to="/" className="btn-ghost h-11">Home</Link>
-        </div>
-      </div>
-    );
-  }
+  const checkout = () => {
+    const order = placeOrder(items, total);
+    clear();
+    push("Order placed — tracking live!", "success");
+    navigate(`/orders/${order.id}`);
+  };
 
   if (items.length === 0) {
     return (
@@ -92,10 +84,10 @@ export default function Cart() {
           {shipping > 0 && <p className="text-xs text-cream/40">Add {inr(4999 - sub)} more for free shipping.</p>}
           <div className="h-px bg-line" />
           <Row label="Total" value={inr(total)} big />
-          <button onClick={() => { setPlaced(true); clear(); }} className="btn-gold h-13 w-full py-3.5 text-base">
-            Proceed to checkout
+          <button onClick={checkout} className="btn-gold h-13 w-full py-3.5 text-base">
+            <Truck size={18} /> Place order &amp; track live
           </button>
-          <p className="text-center text-xs text-cream/40">Secure mock checkout · no real payment</p>
+          <p className="text-center text-xs text-cream/40">Secure mock checkout · live tracking + warranty</p>
         </div>
       </div>
     </div>
