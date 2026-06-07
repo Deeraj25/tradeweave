@@ -24,7 +24,8 @@
       "Bash(node scripts/refetch.mjs)",
       "Bash(node scripts/wiki-fetch.mjs)",
       "Bash(git commit -q -m 'feat: rebranded animated auth \\(Google + Mobile OTP, no GitHub\\); fix catalog image relevance *)",
-      "Bash(git commit -q -m 'feat: retail storefront \\(filters/search/sort\\), product detail, working cart *)"
+      "Bash(git commit -q -m 'feat: retail storefront \\(filters/search/sort\\), product detail, working cart *)",
+      "Bash(git commit -q -m 'feat: working wholesale storefront \\(Add to Order + Catalog Enquiry modal + live order panel\\) *)"
     ]
   }
 }
