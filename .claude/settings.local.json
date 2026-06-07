@@ -17,7 +17,8 @@
       "mcp__Claude_Preview__preview_start",
       "Bash(git commit -q -m 'feat: scaffold Vite+React+TS, Tailwind v4 gold/black theme, router shell *)",
       "Bash(node --input-type=module -e ' *)",
-      "Bash(git commit -q -m 'feat: mock catalog + sales data and local catalog images *)"
+      "Bash(git commit -q -m 'feat: mock catalog + sales data and local catalog images *)",
+      "Bash(git commit -q -m 'feat: cart, wholesale, auth stores with safe storage + tests \\(13 passing\\) *)"
     ]
   }
 }
