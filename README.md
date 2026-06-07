@@ -1,84 +1,134 @@
-# Tradeweave
+# Aura — outfits in your colour
 
-> *Where trade weaves together.* — a direct **B2B + retail** clothing marketplace (no middlemen).
+> An **AI-powered personalised outfit recommendation** feed. A dark editorial
+> wall of looks, each scored and explained against *your* colouring — skin
+> undertone, contrast, face shape and hair.
 
-A cinematic, investor-ready **Phase 1 prototype**: a polished front-end backed by realistic
-mock data. Everything you can click works; nothing needs a server.
+![theme](https://img.shields.io/badge/theme-near--black%20%2B%20warm%20gold-D4A537)
+![stack](https://img.shields.io/badge/Vite%20%2B%20React%20%2B%20TS-informational)
+![engine](https://img.shields.io/badge/colour--theory-deterministic-success)
 
-![theme](https://img.shields.io/badge/theme-luxe%20black%20%2B%20gold-D4A537) ![stack](https://img.shields.io/badge/Vite%20%2B%20React%20%2B%20TS-informational) ![tests](https://img.shields.io/badge/tests-19%20passing-success)
+This repository contains **Phase 1 — the Main Feed (Page 1)**, built to maximum
+polish. The recommendation engine is a deterministic, pure-function stand-in for
+a multimodal vision model, so the whole thing runs with **no server and no API
+key** — and is structured so real AI can be dropped in later without touching the UI.
 
 ---
 
-## Run it
+## ⚡ Quickest look — one file, zero setup
+
+Open **[`aura.html`](aura.html)** directly in any modern browser
+(double-click it). It is a fully self-contained build: the entire app, all 16
+look photos (base64-inlined) and the colour-theory engine in a single file.
+
+> Needs an internet connection on first load (React + Tailwind are pulled from a
+> CDN). Everything else — images, logic, styling — is embedded.
+
+---
+
+## 🛠 Run the full project (dev)
 
 ```bash
 npm install
-npm run images   # (optional) re-download catalog images into public/catalog
-npm run dev      # http://localhost:5173
+npm run dev        # http://localhost:5173
 ```
 
 Other scripts:
 
 ```bash
-npm run build    # type-check + production build
-npm run test     # vitest (cart, wholesale, try-on, catalog/sales)
+npm run build       # type-check (tsc) + production build → dist/
+npm run preview     # serve the production build
+npm run test        # vitest — includes the colour-theory engine tests
+npm run standalone  # regenerate the self-contained aura.html
 ```
 
 ---
 
-## Features
+## ✨ What's built (Page 1 — Main Feed)
 
-### Customer
-- **Cinematic Home** — parallax hero, scroll reveals, featured 3D flip-cards, value props.
-- **Retail storefront** — search, type/origin filters, sort, animated grid.
-- **3D flip product cards** — hover (or tap) to rotate the card and **quick-add by size**;
-  click to open the full product page.
-- **Product detail** — colour/size/quantity selectors and add-to-cart (the "go inside" path).
-- **Working cart** — persistent (localStorage), live navbar badge, quantity steppers, totals,
-  mock checkout.
-- **Wholesale (B2B)** — tiered bulk pricing + MOQ per product, **Add to Order** with a live,
-  editable bulk-order panel (auto re-prices by quantity tier), and a **Catalog Enquiry / Quote**
-  modal that validates inputs and returns a `TW-Q-XXXXXX` reference.
-- **AI Try-On Me** *(simulated)* — opens your **real file picker** (or drag & drop), previews your
-  photo, and gives a **deterministic** recommended size + fit-suitability + colour-match from your
-  measurements (same input → same result; no randomness).
-- **Rebranded animated auth** — two-column sign-up/login with a fashion slideshow hero and
-  **Google + Mobile (OTP)** sign-in (no GitHub).
-
-### Seller / developer
-- **Admin analytics** (`/admin`) — KPI cards with count-up, a **units-sold-by-dress-type** bar
-  chart, traditional-vs-western donut, sales-over-time area chart, and a top-sellers table, with a
-  **Retail / Wholesale / All** toggle. (Recharts, code-split.)
-
----
-
-## Tech
-
-Vite · React 19 · TypeScript · Tailwind CSS v4 · motion/react · lucide-react · react-router-dom ·
-recharts · zustand (persisted) · vitest.
-
-Catalog images are real CC-licensed photos (LoremFlickr / Wikimedia Commons) downloaded into
-`public/catalog/` so the demo is self-contained.
+- **Dark editorial layout** — near-black canvas, warm-gold accents, Playfair
+  display headings.
+- **Top navigation** — category tabs (All / Casual / Formal / Street / Evening)
+  with an animated active pill, a prominent **Upload Garments** CTA, and the
+  user avatar.
+- **Hero** — personalised headline (*"Outfits curated for your colour &
+  structure"*), a subline naming the user's season / face shape / hair, and
+  toggleable **source filter chips** (Vogue, Pinterest, Instagram, Runway,
+  Lookbook).
+- **Grid header** — live matched **count**, **saved** count, and a sort control
+  (best match / highest contrast / warmest palette / newest).
+- **Outfit cards** (responsive 4 → 2 → 1 columns) — each shows:
+  - the look photo (3:4),
+  - a **match-% badge**,
+  - **colour-palette swatches**,
+  - a **save / heart** action (persisted to `localStorage`),
+  - and on **hover**, an overlay with the user's avatar and a short, specific
+    note on **why the outfit suits their features**, plus undertone / contrast /
+    season verdict chips.
+- **Detail drawer** (click any card) — a Page-2 preview: the full rationale, the
+  individual pieces, the named palette, and step-by-step *how to wear it*.
+- **Upload modal** — a real OS file picker + drag-and-drop that previews chosen
+  photos and shows **simulated auto-tagging** (type · colour · fit). No dead
+  buttons anywhere.
 
 ---
 
-## What's mocked vs real
+## 🧠 The colour-theory engine
 
-| Real & working | Mocked (looks real) |
-| --- | --- |
-| All UI, routing, animations | Accounts / login / OTP |
-| Cart + wholesale order math & persistence | Payments / checkout |
-| Filters, flip-card add, quote validation | The AI try-on ML (it's deterministic, not a model) |
-| Analytics charts from the mock sales dataset | Real-time tracking, warranty, POS billing |
+[`src/lib/colorTheory.ts`](src/lib/colorTheory.ts) (with the colour maths in
+[`src/lib/color.ts`](src/lib/color.ts)) is the heart of the product. Given a
+user's [`StyleProfile`](src/data/profile.ts) and an outfit's palette it returns:
+
+- a **match score** (0–100),
+- **undertone / contrast / season** verdicts,
+- a human-readable **rationale** that references the user's own skin, hair and
+  face shape,
+- and deterministic **how-to-wear** styling tips.
+
+It works by converting each swatch to a **warmth** (hue/chroma) and **lightness**
+value, comparing the palette's average warmth, depth and internal contrast to
+targets derived from the user's seasonal type (here, *Warm Autumn*), and nudging
+for loved / avoided colours.
+
+It is **pure and deterministic** — the same outfit + profile always yields the
+same result (no `Math.random`). That's the seam for production: swap the body of
+`analyseOutfit` for a call to a multimodal model (Claude / GPT-4o) plus a
+colour-theory system prompt, and the entire UI keeps working unchanged.
+
+Covered by tests in [`src/test/engine.test.ts`](src/test/engine.test.ts)
+(determinism, score range, warm-palette > cool-palette, rationale content).
 
 ---
 
-## Roadmap (future phases)
+## 🗺 Scope & roadmap
 
-In-built **POS billing for offline stores** → real backend + auth → real payments →
-**real-time tracking** (packing → shipping → delivery) + **warranty support** →
-data / AI-training pipeline → **delivery-partner** network & investor operations.
+**In this build (Phase 1):** the Main Feed and the colour-theory engine, driven
+by a fixed mock profile and 16 mock looks.
+
+**Designed but stubbed for later phases** (the detail drawer and upload modal
+hint at these):
+
+1. **Individual Outfit page** — components with wardrobe swaps, styling
+   variations, colour-theory panel, full how-to-wear.
+2. **Outfit Builder sidebar** — chat-style, natural-language → outfit cards.
+3. **Onboarding** — 3-step face + wardrobe analysis that produces the profile.
+4. Extras — style calendar, wardrobe gap analysis, season profile page,
+   occasion planner, re-wear history.
+5. **Real AI** — replace the deterministic engine with live multimodal calls.
 
 ---
 
-*Phase 1 prototype. Design spec: `docs/superpowers/specs/` · plan: `docs/superpowers/plans/`.*
+## 🧱 Tech
+
+Vite · React · TypeScript · Tailwind CSS v4 · `motion/react` (Framer Motion) ·
+`lucide-react` · `zustand`-ready · vitest.
+
+The standalone `aura.html` re-implements the same UI with CDN React + Tailwind,
+CSS animations and inline SVG icons so it can run from a single file.
+
+Look photos are the project's locally-stored CC-licensed images in
+`public/catalog/` (no external hotlinks), reused as the feed imagery.
+
+---
+
+*Phase 1 prototype — Main Feed. Design notes live in `docs/superpowers/`.*
