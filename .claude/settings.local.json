@@ -27,7 +27,8 @@
       "Bash(git commit -q -m 'feat: retail storefront \\(filters/search/sort\\), product detail, working cart *)",
       "Bash(git commit -q -m 'feat: working wholesale storefront \\(Add to Order + Catalog Enquiry modal + live order panel\\) *)",
       "Bash(npx vitest *)",
-      "Bash(git commit -q -m 'feat: AI Try-On with real file picker + deterministic fit \\(must-fix\\) *)"
+      "Bash(git commit -q -m 'feat: AI Try-On with real file picker + deterministic fit \\(must-fix\\) *)",
+      "Bash(git commit -q -m 'feat: admin analytics dashboard \\(Recharts\\) with channel toggle *)"
     ]
   }
 }
