@@ -43,7 +43,8 @@
       "Bash(git commit -q -m 'revert: restore Tradeweave as the active app \\(set Aura aside\\) *)",
       "Bash(git ls-tree *)",
       "Bash(git rev-list *)",
-      "Bash(curl -s http://localhost:5180/)"
+      "Bash(curl -s http://localhost:5180/)",
+      "Bash(git commit -q -m 'ci: deploy Pages from master \\(default branch satisfies environment protection\\) *)"
     ]
   }
 }
