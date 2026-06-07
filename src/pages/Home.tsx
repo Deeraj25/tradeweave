@@ -15,14 +15,15 @@ import Reveal from "../components/Reveal";
 import ProductCard from "../components/ProductCard";
 import { products } from "../data/products";
 import { compactInr } from "../lib/format";
+import { asset } from "../lib/asset";
 
 const featured = products.slice(0, 8);
 const collage = [
-  "/catalog/bridal-lehenga.jpg",
-  "/catalog/kanjeevaram-saree.jpg",
-  "/catalog/royal-sherwani.jpg",
-  "/catalog/evening-gown.jpg",
-];
+  "catalog/bridal-lehenga.jpg",
+  "catalog/kanjeevaram-saree.jpg",
+  "catalog/royal-sherwani.jpg",
+  "catalog/evening-gown.jpg",
+].map(asset);
 
 export default function Home() {
   const heroRef = useRef<HTMLDivElement>(null);

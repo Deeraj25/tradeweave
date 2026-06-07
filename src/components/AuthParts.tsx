@@ -3,13 +3,14 @@ import type { ReactNode } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Check } from "lucide-react";
 import Logo from "./Logo";
+import { asset } from "../lib/asset";
 
 const SLIDES = [
-  "/catalog/bridal-lehenga.jpg",
-  "/catalog/evening-gown.jpg",
-  "/catalog/royal-sherwani.jpg",
-  "/catalog/anarkali-gown.jpg",
-];
+  "catalog/bridal-lehenga.jpg",
+  "catalog/evening-gown.jpg",
+  "catalog/royal-sherwani.jpg",
+  "catalog/anarkali-gown.jpg",
+].map(asset);
 
 /** Left hero: crossfading fashion slideshow (video-like) + brand + steps. */
 export function AuthHero({
