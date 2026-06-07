@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { pageTransition } from "./lib/motion";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import Toaster from "./components/Toaster";
 import Home from "./pages/Home";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
@@ -51,6 +52,7 @@ export default function App() {
         </AnimatePresence>
       </main>
       {!isAuth && <Footer />}
+      <Toaster />
     </div>
   );
 }
