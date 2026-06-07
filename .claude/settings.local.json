@@ -6,7 +6,16 @@
       "Bash(git add *)",
       "Bash(git commit -q -m 'docs: Tradeweave Phase 1 design spec *)",
       "Bash(git commit -q -m 'docs: add must-fix requirements \\(wholesale actions, cart, AI try-on\\) *)",
-      "Bash(git commit -q -m 'docs: Tradeweave Phase 1 implementation plan *)"
+      "Bash(git commit -q -m 'docs: Tradeweave Phase 1 implementation plan *)",
+      "Bash(git checkout *)",
+      "Read(//c/Users/DEERAJ/**)",
+      "Bash(rm -rf tw-temp)",
+      "Bash(npm create *)",
+      "Bash(npm install *)",
+      "Bash(rm -f src/App.css)",
+      "Bash(npm run *)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(git commit -q -m 'feat: scaffold Vite+React+TS, Tailwind v4 gold/black theme, router shell *)"
     ]
   }
 }
