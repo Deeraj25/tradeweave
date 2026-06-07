@@ -198,7 +198,47 @@ category split, retail vs wholesale).
 
 ---
 
-## 9. Roadmap (post Phase 1)
+## 9. Lessons From Previous Builds — MUST-FIX Requirements
+
+These broke in earlier attempts and are now hard requirements with explicit acceptance tests:
+
+### 9.1 Wholesale actions must actually work
+- The wholesale flow previously exposed "Catalog Enquiry" and "Order" but **neither did anything**.
+- **Fix:**
+  - **"Add to Order"** adds the product (with chosen qty ≥ MOQ and tier price) to a **wholesale
+    order** held in state, viewable on a B2B order/cart summary, with running totals.
+  - **"Request Quote" / "Catalog Enquiry"** opens a **working modal form** (business name, GST,
+    contact, qty, message) that **validates inputs** and on submit shows a **success confirmation
+    with a generated reference number** (e.g. `TW-Q-XXXXXX`).
+  - No dead buttons anywhere in wholesale.
+- **Acceptance:** clicking each wholesale action produces a visible state change or confirmation;
+  added items appear in the wholesale order view.
+
+### 9.2 Cart must show added products
+- Previously, items added to cart were **not viewable**.
+- **Fix:** `zustand` cart store (persisted to `localStorage`); navbar shows a **live item-count
+  badge**; `/cart` lists every line item (image, name, size, qty steppers, line price), with
+  subtotal/total and remove controls. Wholesale order has its own equivalent view.
+- **Acceptance:** add from flip-card or detail page → badge increments → `/cart` shows the exact
+  items and correct math; refresh preserves the cart.
+
+### 9.3 AI Try-On must open the real file picker and give input-driven results
+- Previously, the upload **could not open the file manager** and predictions were **random**.
+- **Fix:**
+  - Use a hidden `<input type="file" accept="image/*">` triggered by a ref so clicking the
+    dropzone (or "Upload photo") **opens the OS file picker**; support drag-and-drop too.
+  - Show the uploaded image preview via `URL.createObjectURL`.
+  - **Deterministic prediction:** the suitability score, recommended size, and color-match are
+    computed from **actual inputs** — a stable hash of the file (name + size) combined with
+    **user-entered measurements** (height/weight/body type) run against the garment's size chart.
+    The same photo + same measurements **always yield the same result** (no `Math.random()`).
+  - Clear "simulated preview" labeling.
+- **Acceptance:** clicking upload opens a file dialog; the chosen image renders; re-running with the
+  same image + measurements returns identical numbers; changing measurements changes them sensibly.
+
+---
+
+## 10. Roadmap (post Phase 1)
 
 POS billing for offline stores → real backend + auth → real payments → logistics/tracking
 + warranty → data/AI-training pipeline → delivery-partner & investor operations.
