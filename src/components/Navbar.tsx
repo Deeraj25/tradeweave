@@ -1,16 +1,18 @@
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { AnimatePresence, motion } from "motion/react";
-import { ShoppingBag, Briefcase, Menu, X, User } from "lucide-react";
+import { ShoppingBag, Briefcase, Menu, X, User, Truck } from "lucide-react";
 import Logo from "./Logo";
 import { useCart } from "../store/cart";
 import { useWholesale } from "../store/wholesale";
+import { useOrders } from "../store/orders";
 import { useAuth } from "../store/auth";
 
 const links = [
   { to: "/retail", label: "Retail" },
   { to: "/wholesale", label: "Wholesale" },
   { to: "/try-on", label: "AI Try-On" },
+  { to: "/orders", label: "Orders" },
   { to: "/admin", label: "Admin" },
 ];
 
@@ -32,6 +34,7 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const cartCount = useCart((s) => s.count());
   const wholesaleCount = useWholesale((s) => s.count());
+  const activeOrders = useOrders((s) => s.orders.filter((o) => o.status !== "delivered").length);
   const user = useAuth((s) => s.user);
 
   return (
@@ -56,6 +59,10 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center gap-2">
+          <Link to="/orders" className="relative rounded-lg p-2 text-cream/80 hover:text-gold" aria-label="Orders">
+            <Truck size={20} />
+            <Badge count={activeOrders} />
+          </Link>
           <Link to="/wholesale" className="relative rounded-lg p-2 text-cream/80 hover:text-gold" aria-label="Wholesale order">
             <Briefcase size={20} />
             <Badge count={wholesaleCount} />

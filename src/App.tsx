@@ -13,6 +13,8 @@ import Retail from "./pages/Retail";
 import Wholesale from "./pages/Wholesale";
 import ProductDetail from "./pages/ProductDetail";
 import Cart from "./pages/Cart";
+import Orders from "./pages/Orders";
+import OrderTracking from "./pages/OrderTracking";
 import TryOn from "./pages/TryOn";
 
 // Admin pulls in Recharts — load it on demand to keep the initial bundle lean.
@@ -67,6 +69,8 @@ export default function App() {
               <Route path="/wholesale" element={<Page><Wholesale /></Page>} />
               <Route path="/product/:id" element={<Page><ProductDetail /></Page>} />
               <Route path="/cart" element={<Page><Cart /></Page>} />
+              <Route path="/orders" element={<Page><Orders /></Page>} />
+              <Route path="/orders/:id" element={<Page><OrderTracking /></Page>} />
               <Route path="/try-on" element={<Page><TryOn /></Page>} />
               <Route path="/admin" element={<Page><Admin /></Page>} />
               <Route path="*" element={<Page><NotFound /></Page>} />
