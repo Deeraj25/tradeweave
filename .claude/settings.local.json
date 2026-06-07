@@ -5,7 +5,8 @@
       "Bash(git config *)",
       "Bash(git add *)",
       "Bash(git commit -q -m 'docs: Tradeweave Phase 1 design spec *)",
-      "Bash(git commit -q -m 'docs: add must-fix requirements \\(wholesale actions, cart, AI try-on\\) *)"
+      "Bash(git commit -q -m 'docs: add must-fix requirements \\(wholesale actions, cart, AI try-on\\) *)",
+      "Bash(git commit -q -m 'docs: Tradeweave Phase 1 implementation plan *)"
     ]
   }
 }
