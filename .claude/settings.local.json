@@ -41,7 +41,9 @@
       "Bash(git rm *)",
       "Bash(rm -f aura.html aura.template.html scripts/build-standalone.mjs)",
       "Bash(git commit -q -m 'revert: restore Tradeweave as the active app \\(set Aura aside\\) *)",
-      "Bash(git ls-tree *)"
+      "Bash(git ls-tree *)",
+      "Bash(git rev-list *)",
+      "Bash(curl -s http://localhost:5180/)"
     ]
   }
 }
