@@ -1,85 +1,81 @@
-import { useEffect, useMemo, useState } from "react";
-import Nav from "./components/feed/Nav";
-import Hero from "./components/feed/Hero";
-import GridHeader, { type Sort } from "./components/feed/GridHeader";
-import OutfitGrid, { type ScoredOutfit } from "./components/feed/OutfitGrid";
-import UploadModal from "./components/feed/UploadModal";
-import DetailDrawer from "./components/feed/DetailDrawer";
-import { CATEGORIES, SOURCES, outfits, type Source } from "./data/outfits";
-import { profile } from "./data/profile";
-import { analyseOutfit } from "./lib/colorTheory";
+import type { ReactNode } from "react";
+import { lazy, Suspense } from "react";
+import { Routes, Route, useLocation, Link } from "react-router-dom";
+import { AnimatePresence, motion } from "motion/react";
+import { pageTransition } from "./lib/motion";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import Toaster from "./components/Toaster";
+import Home from "./pages/Home";
+import Signup from "./pages/Signup";
+import Login from "./pages/Login";
+import Retail from "./pages/Retail";
+import Wholesale from "./pages/Wholesale";
+import ProductDetail from "./pages/ProductDetail";
+import Cart from "./pages/Cart";
+import TryOn from "./pages/TryOn";
 
-type Category = (typeof CATEGORIES)[number];
-const SAVED_KEY = "aura.saved";
+// Admin pulls in Recharts — load it on demand to keep the initial bundle lean.
+const Admin = lazy(() => import("./pages/Admin"));
+
+function Page({ children }: { children: ReactNode }) {
+  return (
+    <motion.div
+      initial={pageTransition.initial}
+      animate={pageTransition.animate}
+      exit={pageTransition.exit}
+      transition={pageTransition.transition}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+function Loader() {
+  return (
+    <div className="grid min-h-[60vh] place-items-center">
+      <div className="h-8 w-8 animate-spin rounded-full border-2 border-line border-t-gold" />
+    </div>
+  );
+}
+
+function NotFound() {
+  return (
+    <div className="mx-auto grid max-w-md place-items-center gap-4 px-6 py-32 text-center">
+      <p className="text-display text-6xl font-semibold text-gold">404</p>
+      <h1 className="text-2xl font-medium">This page got lost in the weave.</h1>
+      <Link to="/" className="btn-gold h-11">Back home</Link>
+    </div>
+  );
+}
 
 export default function App() {
-  const [category, setCategory] = useState<Category>("All");
-  const [sources, setSources] = useState<Set<Source>>(new Set(SOURCES));
-  const [sort, setSort] = useState<Sort>("match");
-  const [uploadOpen, setUploadOpen] = useState(false);
-  const [detail, setDetail] = useState<ScoredOutfit | null>(null);
-  const [saved, setSaved] = useState<Set<string>>(() => {
-    try {
-      return new Set<string>(JSON.parse(localStorage.getItem(SAVED_KEY) ?? "[]"));
-    } catch {
-      return new Set<string>();
-    }
-  });
-
-  useEffect(() => {
-    localStorage.setItem(SAVED_KEY, JSON.stringify([...saved]));
-  }, [saved]);
-
-  // Score every outfit once — this is the deterministic "AI" pass.
-  const scored = useMemo<ScoredOutfit[]>(
-    () => outfits.map((outfit) => ({ outfit, analysis: analyseOutfit(outfit, profile) })),
-    [],
-  );
-
-  const visible = useMemo(() => {
-    const order = outfits.map((o) => o.id);
-    const list = scored.filter(
-      ({ outfit }) =>
-        (category === "All" || outfit.category === category) && sources.has(outfit.source),
-    );
-    const sorters: Record<Sort, (a: ScoredOutfit, b: ScoredOutfit) => number> = {
-      match: (a, b) => b.analysis.matchScore - a.analysis.matchScore,
-      contrast: (a, b) => b.analysis.contrast - a.analysis.contrast,
-      warmth: (a, b) => b.analysis.warmthAvg - a.analysis.warmthAvg,
-      newest: (a, b) => order.indexOf(a.outfit.id) - order.indexOf(b.outfit.id),
-    };
-    return [...list].sort(sorters[sort]);
-  }, [scored, category, sources, sort]);
-
-  const toggleSource = (s: Source) =>
-    setSources((prev) => {
-      const next = new Set(prev);
-      if (next.has(s)) next.delete(s);
-      else next.add(s);
-      return next;
-    });
-
-  const toggleSave = (id: string) =>
-    setSaved((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
+  const location = useLocation();
+  const isAuth = location.pathname === "/login" || location.pathname === "/signup";
 
   return (
-    <div className="min-h-screen">
-      <Nav category={category} onCategory={setCategory} onUpload={() => setUploadOpen(true)} />
-      <Hero active={sources} onToggle={toggleSource} />
-      <GridHeader count={visible.length} savedCount={saved.size} sort={sort} onSort={setSort} />
-      <OutfitGrid items={visible} saved={saved} onToggleSave={toggleSave} onOpen={setDetail} />
-
-      <footer className="border-t border-line py-8 text-center text-xs text-cream/35">
-        Aura · personalised outfit feed · deterministic colour-theory engine (AI swap-in ready)
-      </footer>
-
-      <UploadModal open={uploadOpen} onClose={() => setUploadOpen(false)} />
-      <DetailDrawer item={detail} onClose={() => setDetail(null)} />
+    <div className="flex min-h-screen flex-col bg-ink">
+      {!isAuth && <Navbar />}
+      <main className="flex-1">
+        <Suspense fallback={<Loader />}>
+          <AnimatePresence mode="wait">
+            <Routes location={location} key={location.pathname}>
+              <Route path="/" element={<Page><Home /></Page>} />
+              <Route path="/signup" element={<Page><Signup /></Page>} />
+              <Route path="/login" element={<Page><Login /></Page>} />
+              <Route path="/retail" element={<Page><Retail /></Page>} />
+              <Route path="/wholesale" element={<Page><Wholesale /></Page>} />
+              <Route path="/product/:id" element={<Page><ProductDetail /></Page>} />
+              <Route path="/cart" element={<Page><Cart /></Page>} />
+              <Route path="/try-on" element={<Page><TryOn /></Page>} />
+              <Route path="/admin" element={<Page><Admin /></Page>} />
+              <Route path="*" element={<Page><NotFound /></Page>} />
+            </Routes>
+          </AnimatePresence>
+        </Suspense>
+      </main>
+      {!isAuth && <Footer />}
+      <Toaster />
     </div>
   );
 }

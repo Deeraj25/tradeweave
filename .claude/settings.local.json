@@ -29,7 +29,18 @@
       "Bash(npx vitest *)",
       "Bash(git commit -q -m 'feat: AI Try-On with real file picker + deterministic fit \\(must-fix\\) *)",
       "Bash(git commit -q -m 'feat: admin analytics dashboard \\(Recharts\\) with channel toggle *)",
-      "Bash(git commit -q -m 'feat: polish — 404 route, lazy-loaded Admin chunk, README + final verification *)"
+      "Bash(git commit -q -m 'feat: polish — 404 route, lazy-loaded Admin chunk, README + final verification *)",
+      "PowerShell($gh = Get-Command gh -ErrorAction SilentlyContinue; if \\($gh\\) { \"gh found at: $\\($gh.Source\\)\"; gh auth status 2>&1 | Select-Object -First 6 } else { \"gh NOT installed\" }; \"---GIT REMOTE---\"; git -C \"C:\\\\Users\\\\DEERAJ\\\\Tradeweave\" remote -v)",
+      "PowerShell(winget install --id GitHub.cli --silent --accept-source-agreements --accept-package-agreements 2>&1)",
+      "PowerShell($paths = @\\(\"C:\\\\Program Files\\\\GitHub CLI\\\\gh.exe\",\"C:\\\\Program Files \\(x86\\)\\\\GitHub CLI\\\\gh.exe\",\"$env:LOCALAPPDATA\\\\Microsoft\\\\WinGet\\\\Links\\\\gh.exe\"\\); $found = $paths | Where-Object { Test-Path $_ } | Select-Object -First 1; if \\($found\\) { \"FOUND: $found\"; & $found --version | Select-Object -First 1 } else { \"gh.exe not found in common locations\"; Get-ChildItem \"C:\\\\Program Files\\\\GitHub CLI\" -ErrorAction SilentlyContinue })",
+      "PowerShell(Set-Location \"C:\\\\Users\\\\DEERAJ\\\\Tradeweave\"; git push -u origin master; \"master exit=$LASTEXITCODE\"; git push -u origin phase1-build; \"phase1 exit=$LASTEXITCODE\")",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code} in %{time_total}s\\\\n\" http://localhost:5173/)",
+      "Bash(curl -s http://localhost:5173/)",
+      "PowerShell($c = Get-NetTCPConnection -LocalPort 5173 -State Listen -ErrorAction SilentlyContinue; if \\($c\\) { $c.OwningProcess | Select-Object -Unique | ForEach-Object { try { Stop-Process -Id $_ -Force -ErrorAction Stop; \"killed $_\" } catch {} } } else { \"no listener\" })",
+      "Bash(node scripts/build-standalone.mjs)",
+      "Bash(git rm *)",
+      "Bash(rm -f aura.html aura.template.html scripts/build-standalone.mjs)",
+      "Bash(git commit -q -m 'revert: restore Tradeweave as the active app \\(set Aura aside\\) *)"
     ]
   }
 }
