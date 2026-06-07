@@ -19,7 +19,8 @@
       "Bash(node --input-type=module -e ' *)",
       "Bash(git commit -q -m 'feat: mock catalog + sales data and local catalog images *)",
       "Bash(git commit -q -m 'feat: cart, wholesale, auth stores with safe storage + tests \\(13 passing\\) *)",
-      "Bash(git commit -q -m 'feat: shared components \\(3D flip ProductCard, navbar badges, KpiCard, toasts, Reveal\\) *)"
+      "Bash(git commit -q -m 'feat: shared components \\(3D flip ProductCard, navbar badges, KpiCard, toasts, Reveal\\) *)",
+      "Bash(git commit -q -m 'feat: cinematic Home page \\(parallax hero, split panels, featured flip cards, value props\\) *)"
     ]
   }
 }
