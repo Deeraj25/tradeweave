@@ -20,7 +20,10 @@
       "Bash(git commit -q -m 'feat: mock catalog + sales data and local catalog images *)",
       "Bash(git commit -q -m 'feat: cart, wholesale, auth stores with safe storage + tests \\(13 passing\\) *)",
       "Bash(git commit -q -m 'feat: shared components \\(3D flip ProductCard, navbar badges, KpiCard, toasts, Reveal\\) *)",
-      "Bash(git commit -q -m 'feat: cinematic Home page \\(parallax hero, split panels, featured flip cards, value props\\) *)"
+      "Bash(git commit -q -m 'feat: cinematic Home page \\(parallax hero, split panels, featured flip cards, value props\\) *)",
+      "Bash(node scripts/refetch.mjs)",
+      "Bash(node scripts/wiki-fetch.mjs)",
+      "Bash(git commit -q -m 'feat: rebranded animated auth \\(Google + Mobile OTP, no GitHub\\); fix catalog image relevance *)"
     ]
   }
 }
